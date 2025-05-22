@@ -1,0 +1,31 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String    @id @default(uuid())
+  email       String    @unique
+  password    String
+  role        Role      @default(USER)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  wallets     Wallet[]
+  trades      Trade[]
+  deposits    Deposit[]
+  kycStatus   Boolean   @default(false)
+  profile     Profile?
+
+  @@map("users")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+// ... additional models for Wallet, Trade, Deposit, Profile etc ...
